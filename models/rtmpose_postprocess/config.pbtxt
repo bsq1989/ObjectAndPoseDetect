@@ -1,0 +1,38 @@
+name: "rtmpose_postprocess"
+backend: "python"
+max_batch_size: 0
+input [
+  {
+    name: "model_simcc_x",
+    data_type: TYPE_FP32,
+    dims: [ 1, 26, 576]
+  },
+  {
+    name: "model_simcc_y",
+    data_type: TYPE_FP32,
+    dims: [ 1, 26, 768]
+  },
+  {
+    name: "image_center"
+    data_type: TYPE_FP32
+    dims: [1, 2]
+  },
+  {
+    name: "image_scale"
+    data_type: TYPE_FP32
+    dims: [1, 2]
+  }
+]
+
+output [
+  {
+    name: "det_keypoints"
+    data_type: TYPE_FP32
+    dims: [ 1, 26, 2]
+  },
+  {
+    name: "det_scores"
+    data_type: TYPE_FP32
+    dims: [1,26]
+  }
+]

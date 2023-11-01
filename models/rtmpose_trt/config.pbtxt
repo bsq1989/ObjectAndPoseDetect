@@ -1,0 +1,22 @@
+name: "rtmpose_trt"
+backend: "tensorrt"
+max_batch_size: 0
+input: [
+  {
+    name: "input",
+    data_type: TYPE_FP32,
+    dims: [ 1, 3, 384, 288]
+  }
+]
+output: [
+  {
+    name: "simcc_x",
+    data_type: TYPE_FP32,
+    dims: [ -1, 26, 576]
+  },
+  {
+    name: "simcc_y",
+    data_type: TYPE_FP32,
+    dims: [ -1, 26, 768]
+  }
+]

@@ -1,0 +1,1 @@
+docker run -itd -v /mnt/c/Users/fm/Desktop/infer_service/infer_code/service:/workspace --net=host --restart=always --privileged=true dl_infer_client /bin/bash -c "cd /workspace;bash start_request_process.sh;/bin/bash"

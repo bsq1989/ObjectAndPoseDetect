@@ -1,0 +1,53 @@
+name: "yolo_postprocess"
+backend: "python"
+max_batch_size: 0
+input [
+  {
+    name: "num_dets_in",
+    data_type: TYPE_INT32,
+    dims: [1, 1]
+  },
+  {
+    name: "det_boxes_in",
+    data_type: TYPE_FP32,
+    dims: [ 1, 100, 4]
+  },
+  {
+    name: "det_scores_in",
+    data_type: TYPE_FP32,
+    dims: [ 1, 100]
+  },
+  {
+    name: "det_classes_in",
+    data_type: TYPE_INT32,
+    dims: [ 1, 100]
+  },
+  {
+    name: "origin_img_shape",
+    data_type: TYPE_INT32,
+    dims: [ 1, 4]
+  }
+]
+
+output [
+{
+    name: "final_boxes"
+    data_type: TYPE_INT32
+    dims: [ 1, 100, 4 ]
+},
+{
+    name: "final_confidents"
+    data_type: TYPE_FP32
+    dims: [1,100]
+},
+{
+    name: "class_label_id"
+    data_type: TYPE_INT32
+    dims: [1, 100]
+},
+{
+  name: "final_num_dets"
+  data_type: TYPE_INT32
+  dims: [1, 1]
+}
+]

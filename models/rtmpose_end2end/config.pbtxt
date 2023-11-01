@@ -1,0 +1,90 @@
+name: "rtmpose_end2end"
+platform: "ensemble"
+max_batch_size: 1
+input[
+    {
+        name: "rtmpose_input"
+        data_type: TYPE_UINT8
+        dims: [-1, -1, -1 ]
+    }
+]
+output [
+    {
+        name: "rtmpose_keypoints"
+        data_type: TYPE_FP32
+        dims: [1, 26, 2]
+    },
+    {
+        name: "rtmpose_scores"
+        data_type: TYPE_FP32
+        dims: [1, 26]
+    }
+]
+ensemble_scheduling {
+    step [
+        {
+            model_name: "rtmpose_preprocess"
+            model_version: 1
+            input_map{
+                key: "origin_img"
+                value: "rtmpose_input"
+            }
+            output_map {
+                key: "rtmpose_infer_input"
+                value: "model_input"
+            }
+            output_map {
+                key: "input_center"
+                value: "img_center"
+            }
+            output_map {
+                key: "input_scale"
+                value: "img_scale"
+            }
+        },
+        {
+            model_name: "rtmpose_trt"
+            model_version: 1
+            input_map{
+                key: "input"
+                value: "model_input"
+            }
+            output_map{
+                key: "simcc_x"
+                value: "model_out_x"
+            }
+            output_map{
+                key: "simcc_y"
+                value: "model_out_y"
+            }
+        },
+        {
+            model_name: "rtmpose_postprocess"
+            model_version: 1
+            input_map{
+                key: "model_simcc_x"
+                value: "model_out_x"
+            }
+            input_map {
+                key: "model_simcc_y"
+                value: "model_out_y"
+            }
+            input_map {
+                key: "image_center"
+                value: "img_center"
+            }
+            input_map {
+                key: "image_scale"
+                value: "img_scale"
+            }
+            output_map {
+                key: "det_keypoints"
+                value: "rtmpose_keypoints"
+            }
+            output_map {
+                key: "det_scores"
+                value: "rtmpose_scores"
+            }
+        }
+    ]
+}
